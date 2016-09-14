@@ -16,8 +16,6 @@ namespace FreePIE.Core.Plugins
         // Mouse position state variables
         private double deltaXOut;
         private double deltaYOut;
-        private double normalizedXOut;
-        private double normalizedYOut;
         private int wheel;
         public const int WheelMax = 120;
 
@@ -106,29 +104,6 @@ namespace FreePIE.Core.Plugins
                 wheel = 0;
             }
 
-            if ((int)normalizedXOut != 0 || (int)normalizedYOut != 0)
-            {
-                int xOut = (int)(normalizedXOut); // * 65535);
-                int yOut = (int)(normalizedYOut); // * 65535);
-
-                var input = new MouseKeyIO.INPUT[1];
-                input[0].type = MouseKeyIO.INPUT_MOUSE;
-                input[0].mi = MouseInput((int)xOut, (int)yOut, (uint)wheel, 0, MouseKeyIO.MOUSEEVENTF_MOVE | MouseKeyIO.MOUSEEVENTF_ABSOLUTE);
-
-                MouseKeyIO.SendInput(1, input, Marshal.SizeOf(input[0].GetType()));
-
-                // Reset the mouse values
-                if ((int)normalizedXOut != 0)
-                {
-                    normalizedXOut = normalizedXOut - (int)normalizedXOut;
-                }
-                if ((int)normalizedYOut != 0)
-                {
-                    normalizedYOut = normalizedYOut - (int)normalizedYOut;
-                }
-
-            }
-
             currentMouseState = null;  // flush the mouse state
 
             setButtonPressedStrategy.Do();
@@ -159,26 +134,6 @@ namespace FreePIE.Core.Plugins
             get { return CurrentMouseState.Z; }
             set { wheel = value; }
             
-        }
-
-        public double NormalizedX
-        {
-            set
-            {
-                normalizedXOut = normalizedXOut + value;
-            }
-
-            get { return CurrentMouseState.X; }
-        }
-
-        public double NormalizedY
-        {
-            set
-            {
-                normalizedYOut = normalizedYOut + value;
-            }
-
-            get { return CurrentMouseState.Y; }
         }
 
         private MouseState CurrentMouseState
@@ -303,18 +258,6 @@ namespace FreePIE.Core.Plugins
         {
             get { return plugin.DeltaY; }
             set { plugin.DeltaY = value; }
-        }
-
-        public double normalizedX
-        {
-            get { return plugin.NormalizedX; }
-            set { plugin.NormalizedX = value; }
-        }
-
-        public double normalizedY
-        {
-            get { return plugin.NormalizedY; }
-            set { plugin.NormalizedY = value; }
         }
 
         public int wheel
