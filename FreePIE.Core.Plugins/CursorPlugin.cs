@@ -27,16 +27,16 @@ namespace FreePIE.Core.Plugins
             IntPtr handle = Process.GetCurrentProcess().MainWindowHandle;
 
             CursorPosIO.ClipCursor();
-
+            CursorPosIO.ShowCursor(false);
             OnStarted(this, new EventArgs());
             return null;
         }
 
         public override void Stop()
         {
-
+            CursorPosIO.ShowCursor(true);
         }
-        
+
         public override string FriendlyName
         {
             get { return "Cursor"; }
@@ -91,7 +91,7 @@ namespace FreePIE.Core.Plugins
             get
             {
                 CursorPosIO.POINT cursorPos;
-                CursorPosIO.GetCursorPos(out cursorPos);
+                CursorPosIO.GetPhysicalCursorPos(out cursorPos);
                 return cursorPos;
             }
         }

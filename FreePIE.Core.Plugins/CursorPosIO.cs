@@ -28,9 +28,19 @@ namespace FreePIE.Core.Plugins
         public static extern uint ClipCursor();
 
         [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool GetCursorPos(out POINT lpPoint);
+
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern bool SetCursorPos(int X, int Y);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool GetCursorPos(out POINT lpPoint);
+        public static extern bool GetPhysicalCursorPos(out POINT lpPoint);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool SetPhysicalCursorPos(int X, int Y);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern int ShowCursor(bool bShow);
+
     }
 }
